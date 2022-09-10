@@ -1,9 +1,8 @@
-// The padding character code is 64 decimal, '='
-export const Base64PadChar = 64;
+export const Base64PadChar = 61; // == '=' in ascii
 
 // the padding character '=' is there on purpose to resolve to 64 decimal
-export const Base64Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-export const Base64AlphabetURL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_=';
+export const Base64Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+export const Base64AlphabetURL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
 // and the lookup tables are there to resolve the decimal value to the index in the alphabet
 // why create it every time we need it? it's a constant, so we can create it once and reuse it forever

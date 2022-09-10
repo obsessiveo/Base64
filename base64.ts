@@ -2,36 +2,67 @@ import { base64AddPadding } from './base64.common';
 import { Base64AlphabetURLLookup, Base64PadChar } from './base64.const';
 
 function encode(str: string, alphabet: Uint8Array): string {
-  return Buffer.from(str).toString('base64');
+  let retVal = '';
+
+  const mod = str.length % 3; // 1
+  const len = str.length - mod; // 4
+
+  for (let i = 0; i < len; i += 3) {
+    const byte1 = str.charCodeAt(i);
+    const byte2 = str.charCodeAt(i + 1);
+    const byte3 = str.charCodeAt(i + 2);
+
+    const a = byte1 >>> 2;
+    const b = ((byte1 & 0x03) << 4) | (byte2 >>> 4);
+    const c = ((byte2 & 0x0f) << 2) | (byte3 >>> 6);
+    const d = byte3 & 0x3f;
+
+    retVal += String.fromCharCode(alphabet[a], alphabet[b], alphabet[c], alphabet[d]);
+  }
+
+  if (mod === 1) {
+    const byte1 = str.charCodeAt(len);
+    const a = byte1 >>> 2;
+    const b = (byte1 & 0x03) << 4;
+
+    retVal += String.fromCharCode(alphabet[a], alphabet[b], Base64PadChar, Base64PadChar);
+  } else if (mod === 2) {
+    const byte1 = str.charCodeAt(len);
+
+    const byte2 = str.charCodeAt(len + 1);
+    const a = byte1 >>> 2;
+
+    const b = ((byte1 & 0x03) << 4) | (byte2 >>> 4);
+    const c = (byte2 & 0x0f) << 2;
+
+    retVal += String.fromCharCode(alphabet[a], alphabet[b], alphabet[c], Base64PadChar);
+  }
+
+  return retVal;
 }
 
 function decode(str: string, alphabet: Uint8Array): string {
-  // assuming padding has been added. I.e. str.length % 4 === 0
   let retval = '';
   const len = str.length;
 
-  // ok, we have a multiple of 4 characters. Let's decode.
-  for (let i = 0; i < len; i += 4) {
+  for (let i = 0; i < len - 3; i += 4) {
     const a = alphabet[str.charCodeAt(i)];
     const b = alphabet[str.charCodeAt(i + 1)];
     const c = alphabet[str.charCodeAt(i + 2)];
     const d = alphabet[str.charCodeAt(i + 3)];
-    let byte = 0;
 
     // the first last 6 bits of a and the first 2 bits of b
-    byte = (a << 2) | (b >>> 4);
+    let byte = (a << 2) | (b >>> 4);
     retval += String.fromCharCode(byte);
 
     // the last 4 bits of b and the first 4 bits of c
-    if (c !== Base64PadChar) {
-      // if c is not padding
+    if (str.charCodeAt(i + 2) !== Base64PadChar) {
       byte = ((b & 0x0f) << 4) | (c >>> 2);
       retval += String.fromCharCode(byte);
     }
 
     // the last 2 bits of c and all 6 bits of d
-    if (d !== 64) {
-      // if d is not padding
+    if (str.charCodeAt(i + 3) !== Base64PadChar) {
       byte = ((c & 0x03) << 6) | d;
       retval += String.fromCharCode(byte);
     }
@@ -41,12 +72,20 @@ function decode(str: string, alphabet: Uint8Array): string {
   return retval;
 }
 
-function base64UrlEncode(str: string): string {
-  return '';
+export function base64Encode(str: string): string {
+  return encode(str, Base64AlphabetURLLookup);
 }
 
-function base64UrlDecode(str: string): string {
-  const inputStr = base64AddPadding(str);
-  const retVal = decode(inputStr, Base64AlphabetURLLookup);
+export function base64Decode(str: string): string {
+  return decode(str, Base64AlphabetURLLookup);
+}
+
+export function base64UrlEncode(str: string): string {
+  const retVal = encode(str, Base64AlphabetURLLookup);
+  return retVal;
+}
+
+export function base64UrlDecode(str: string): string {
+  const retVal = decode(str, Base64AlphabetURLLookup);
   return retVal;
 }
