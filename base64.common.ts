@@ -1,4 +1,6 @@
-//
+/*
+Copyright (c) 2022 Obsessiveo
+*/
 
 /**
  * Add padding to a base64 string.
@@ -7,8 +9,6 @@
  * @example
  * base64AddPadding('aGV'); // 'aGV='
  * base64AddPadding('aG'); // 'aG=='
- * base64AddPadding('a'); // 'a'
- * base64AddPadding(''); // ''
  */
 export function base64AddPadding(str: string): string {
   const mod = str.length & 0x03; // is this faster than % 4? 🤔 Who knows! This is more fun. 😎
