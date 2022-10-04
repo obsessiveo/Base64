@@ -7,7 +7,7 @@ A simple Base64 library create as a programming excersise.
 ## Features
 
 - Written in Typescript
-- Can decode and encode string from/to Base64 and Base64Url standards.
+- Can decode and encode string from/to Base64.
 
 ## Installation
 
