@@ -1,6 +1,6 @@
 {
   "name": "@obsessiveo/base64",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Base64 core functions",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
