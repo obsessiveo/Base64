@@ -35,6 +35,11 @@ const cases = [
     output: 'SGFwcHkgZmFjZQ==',
     outopt: 'SGFwcHkgZmFjZQ',
   },
+  {
+    input: '{ "iss": "text", "iat": 123456789 }',
+    output: 'eyAiaXNzIjogInRleHQiLCAiaWF0IjogMTIzNDU2Nzg5IH0=',
+    outopt: 'eyAiaXNzIjogInRleHQiLCAiaWF0IjogMTIzNDU2Nzg5IH0',
+  },
 ];
 
 describe('Base64 ecoding', () => {
