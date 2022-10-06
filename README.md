@@ -2,7 +2,7 @@
 
 A simple Base64 library create as a programming excersise.
 
-> There are many much better libraries out there, so use this only if would like to play with the code.
+> There are many much better libraries out there, so use this one only if you would like to play with the code.
 
 ## Features
 
